@@ -1,0 +1,28 @@
+{
+  "name": "eid-natok-server",
+  "version": "1.0.0",
+  "description": "eid natok server",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "start": "node index.js",
+    "start-dev" : "nodemon index.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/probirghosh45/eid-natok-server.git"
+  },
+  "keywords": [
+    "eid",
+    "natok"
+  ],
+  "author": "Probir Ghosh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/probirghosh45/eid-natok-server/issues"
+  },
+  "homepage": "https://github.com/probirghosh45/eid-natok-server#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}

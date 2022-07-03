@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 // import { MongoClient } from "mongodb";
 require("dotenv").config();
 const cors = require("cors");
@@ -45,6 +45,39 @@ async function run() {
       res.send(result);
     //   res.send("ঈদ নাটক - কোরবানীর গরু🐄😬🏃!!!");
 });
+
+ // GET Method Route (by Dynamic id) 
+
+ app.get("/eid-natok-collection/:id",async (req,res)=>{
+  // console.log(req);
+  const id = req.params.id;
+  const query = { _id : ObjectId(id) };
+  const result = await natokCollection.findOne(query);
+  res.send (result)
+ })
+
+app.put("/update-info/:id",async (req, res) => {
+  const data = req.body;
+  console.log("updated info",data);
+  const id = req.params.id;
+  const filter = { _id : ObjectId(id) };
+  const options = { upsert: true };
+  const updateDoc = {
+    $set: {
+      natokName : data.natokName,
+      directorName : data.directorName,
+      starring : data.starring,
+      description : data.description,
+      subscriptionFee : data.subscriptionFee
+    },
+  };
+  const result = await natokCollection.updateOne(filter, updateDoc, options);
+  res.send(result);
+})
+
+
+
+
   } finally {
     //   await client.close();
   }
@@ -54,3 +87,19 @@ run().catch(console.dir);
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+
+/**
+ * API Route
+ * 
+ * POST API : http://localhost:4700/eid-natok
+ * 
+ * GET API : http://localhost:4700/eid-natok-collection
+ * GET API (dynamic id/Unique Identity) : (req.params.id) : http://localhost:4700/eid-natok-collection/$id
+ * GET API (dynamic Data) : (req.query) : http://localhost:4700/eid-natok-collection?
+ * 
+ * 
+ * UPDATE API : http://localhost:4700/update-info/:id
+ * 
+ * DELETE API : 
+ * **/ 

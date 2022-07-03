@@ -3,16 +3,13 @@ const app = express();
 const { MongoClient } = require("mongodb");
 // import { MongoClient } from "mongodb";
 require("dotenv").config();
-const cors = require('cors')
+const cors = require("cors");
 const port = 4700 || process.env.PORT;
-
 
 // middleware
 
-app.use(cors())
-
-
-
+app.use(cors());
+app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@cluster0.ywri3.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
@@ -27,18 +24,17 @@ async function run() {
     //   console.log("DB Connected😁");
     const natokCollection = client.db("eid_natok2022").collection("natok");
 
- 
     // POST method route
     app.post("/eid-natok", (req, res) => {
-      res.send("POST request to the homepage");
+      console.log(req.body);
+      res.send("আমি পোষ্ট করে এসেছি😉");
     });
 
-       // GET method route
-       app.get("/eid-natok-collection", (req, res) => {
-    //    console.log(req);
-        res.send("Hello Bhola!!!");
-      });
-
+    // GET method route
+    app.get("/eid-natok-collection", (req, res) => {
+      //    console.log(req);
+      res.send("Hello Bhola!!!");
+    });
   } finally {
     //   await client.close();
   }

@@ -56,6 +56,7 @@ async function run() {
   res.send (result)
  })
 
+//  Update Data
 app.put("/update-info/:id",async (req, res) => {
   const data = req.body;
   console.log("updated info",data);
@@ -75,7 +76,14 @@ app.put("/update-info/:id",async (req, res) => {
   res.send(result);
 })
 
+// Delete Data
 
+app.delete("/delete-data/:id",async(req,res)=>{
+  const id = req.params.id
+  const query = { _id : ObjectId(id) };
+  const result = await natokCollection.deleteOne(query);
+  res.send(result);
+})
 
 
   } finally {
@@ -101,5 +109,5 @@ app.listen(port, () => {
  * 
  * UPDATE API : http://localhost:4700/update-info/:id
  * 
- * DELETE API : 
+ * DELETE API : http://localhost:4700/delete-data/:id
  * **/ 

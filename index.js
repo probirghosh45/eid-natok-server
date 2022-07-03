@@ -25,16 +25,26 @@ async function run() {
     const natokCollection = client.db("eid_natok2022").collection("natok");
 
     // POST method route
-    app.post("/eid-natok", (req, res) => {
-      console.log(req.body);
-      res.send("আমি পোষ্ট করে এসেছি😉");
+    app.post("/eid-natok", async (req, res) => {
+    //   console.log(req.body);
+    const natokData = req.body
+    const result = await natokCollection.insertOne(natokData);
+    console.log(result);
+    res.send(result);
+    //   res.send("আমি পোষ্ট করে এসেছি😉");
     });
 
+
+
     // GET method route
-    app.get("/eid-natok-collection", (req, res) => {
+    app.get("/eid-natok-collection",async (req, res) => {
       //    console.log(req);
-      res.send("Hello Bhola!!!");
-    });
+      const query = {};
+      const cursor = natokCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    //   res.send("ঈদ নাটক - কোরবানীর গরু🐄😬🏃!!!");
+});
   } finally {
     //   await client.close();
   }

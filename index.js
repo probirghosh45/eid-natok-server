@@ -69,7 +69,8 @@ app.put("/update-info/:id",async (req, res) => {
       directorName : data.directorName,
       starring : data.starring,
       description : data.description,
-      subscriptionFee : data.subscriptionFee
+      subscriptionFee : data.subscriptionFee,
+      coverPhoto : data.coverPhoto
     },
   };
   const result = await natokCollection.updateOne(filter, updateDoc, options);

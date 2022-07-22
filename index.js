@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 async function run() {
   try {
     await client.connect();
-    //   console.log("DB Connected😁");
+      console.log("DB Connected😁");
     const natokCollection = client.db("eid_natok2022").collection("natok");
 
     // POST method route
@@ -98,6 +98,10 @@ app.listen(port, () => {
 });
 
 
+
+
+// Part-1
+
 /**
  * API Route
  * 
@@ -112,3 +116,19 @@ app.listen(port, () => {
  * 
  * DELETE API : http://localhost:4700/delete-data/:id
  * **/ 
+
+
+// Part-2
+
+/***
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * ****/ 

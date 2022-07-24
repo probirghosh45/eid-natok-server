@@ -24,6 +24,7 @@ async function run() {
       console.log("DB Connected😁");
       const natokCollection = client.db("eid_natok2022").collection("natok");
       const orderCollection = client.db("eid_natok2022").collection("order");
+      const userCollection = client.db("eid_natok2022").collection("user");
 
     // POST method route
     app.post("/eid-natok", async (req, res) => {
@@ -128,6 +129,25 @@ app.get("/my-order", async(req,res)=>{
    res.send(result);
  })
 
+
+
+//  user data 
+
+app.put("/user-info/:email", async (req,res)=>{
+    const email = req.params.email;
+    console.log(email);
+    const filter = { email : email };
+    const options = { upsert: true };
+    const user = req.body;
+    console.log(user);
+    const updateDoc = {
+      $set: user
+    };
+
+    const result = await userCollection.updateOne(filter, updateDoc, options);
+    console.log(result);
+    res.send(result);
+})
 
   } finally {
     //   await client.close();

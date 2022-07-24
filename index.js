@@ -5,7 +5,7 @@ const { MongoClient, ObjectId } = require("mongodb");
 require("dotenv").config();
 const cors = require("cors");
 const port = 4700 || process.env.PORT;
-
+var jwt = require('jsonwebtoken');
 // middleware
 
 app.use(cors());
@@ -135,18 +135,19 @@ app.get("/my-order", async(req,res)=>{
 
 app.put("/user-info/:email", async (req,res)=>{
     const email = req.params.email;
-    console.log(email);
+    // console.log(email);
     const filter = { email : email };
     const options = { upsert: true };
     const user = req.body;
-    console.log(user);
+    // console.log(user);
     const updateDoc = {
       $set: user
     };
 
     const result = await userCollection.updateOne(filter, updateDoc, options);
-    console.log(result);
-    res.send(result);
+    // console.log(result);
+    const token = jwt.sign({email : email}, process.env.SECRET_ACCESS_TOKEN , { expiresIn: '1h' });
+    res.send({result,token});
 })
 
   } finally {

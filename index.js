@@ -22,7 +22,8 @@ async function run() {
   try {
     await client.connect();
       console.log("DB Connected😁");
-    const natokCollection = client.db("eid_natok2022").collection("natok");
+      const natokCollection = client.db("eid_natok2022").collection("natok");
+      const orderCollection = client.db("eid_natok2022").collection("order");
 
     // POST method route
     app.post("/eid-natok", async (req, res) => {
@@ -85,6 +86,47 @@ app.delete("/delete-data/:id",async(req,res)=>{
   const result = await natokCollection.deleteOne(query);
   res.send(result);
 })
+
+
+// Order API
+ app.post("/order",async (req,res)=>{
+    const body = req.body;
+    console.log(body);
+    const result = await orderCollection.insertOne(body);
+    res.send(result)
+ })
+
+ app.get("/order", async (req,res)=>{
+   const query = {}
+   const cursor = orderCollection.find(query);
+   const result = await cursor.toArray();
+   res.send(result)
+     
+ })
+
+// ******** type-1 *************
+
+//  app.get("/my-order/:email", async(req,res)=>{
+//   const email = req.params.email;
+//   console.log(email);
+//    const query = {userEmail : email}
+//    const cursor = orderCollection.find(query);
+//    const result = await cursor.toArray();
+//    res.send(result);
+//  })
+    
+
+
+// *********** type-2 ***********************
+
+app.get("/my-order", async(req,res)=>{
+  const email = req.query.email;
+  // console.log(email);
+   const query = {userEmail : email}
+   const cursor = orderCollection.find(query);
+   const result = await cursor.toArray();
+   res.send(result);
+ })
 
 
   } finally {

@@ -192,7 +192,7 @@ app.get("/user-info",verifyJWT,async(req,res)=>{
 
 // Admin API almost same as User API ,ignore token & options [upsert]
 
-app.put("/user-info/admin/:email", async (req,res)=>{
+app.put("/user-info/admin/:email", verifyJWT, async (req,res)=>{
  const email = req.params.email;
  // console.log(email);
  const filter = { email : email };

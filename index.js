@@ -18,6 +18,34 @@ app.get("/", (req, res) => {
   res.send("What's UP Bro🥴!!!");
 });
 
+
+function verifyJWT (req,res,next){
+    const authHeader = req.headers.authorization;
+    // console.log("auth Header Data",authHeader);
+    if(!authHeader){
+      // return res.status(401).send({'message' : "Unauthorized Access"})
+      return res.status(401).send({ message: 'UnAuthorized access' });
+    }
+    else{
+      TokenArray = authHeader.split(" ");
+      const token = TokenArray[1]
+      // console.log("JWT Token",token);
+
+      jwt.verify(token,process.env.SECRET_ACCESS_TOKEN , function(err, decoded) {
+        
+        if(err){
+          return res.status(403).send({message : "Forbidden Access"})
+        }
+        // console.log(decoded);
+        req.decoded = decoded;
+        console.log(req.decoded.email);
+        next();
+      });
+
+
+    }
+}
+
 async function run() {
   try {
     await client.connect();
@@ -120,9 +148,12 @@ app.delete("/delete-data/:id",async(req,res)=>{
 
 // *********** type-2 ***********************
 
-app.get("/my-order", async(req,res)=>{
+app.get("/my-order",verifyJWT, async(req,res)=>{
   const email = req.query.email;
   // console.log(email);
+
+  // const authHeader = req.headers;
+  // console.log("auth Header", authHeader);
    const query = {userEmail : email}
    const cursor = orderCollection.find(query);
    const result = await cursor.toArray();

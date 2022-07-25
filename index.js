@@ -38,7 +38,7 @@ function verifyJWT (req,res,next){
         }
         // console.log(decoded);
         req.decoded = decoded;
-        console.log(req.decoded.email);
+        // console.log(req.decoded.email);
         next();
       });
 
@@ -180,6 +180,35 @@ app.put("/user-info/:email", async (req,res)=>{
     const token = jwt.sign({email : email}, process.env.SECRET_ACCESS_TOKEN , { expiresIn: '1h' });
     res.send({result,token});
 })
+
+
+app.get("/user-info",verifyJWT,async(req,res)=>{
+  const query = {}
+  console.log(query);
+  const cursor = userCollection.find(query);
+ const result = await cursor.toArray()
+ res.send(result)
+})
+
+// Admin API almost same as User API ,ignore token & options [upsert]
+
+app.put("/user-info/admin/:email", async (req,res)=>{
+ const email = req.params.email;
+ // console.log(email);
+ const filter = { email : email };
+//  const options = { upsert: true };
+ // const user = req.body;
+ // console.log(user);
+ const updateDoc = {
+   $set: {role : 'admin'}
+ };
+
+ const result = await userCollection.updateOne(filter, updateDoc);
+    // console.log(result);
+    // const token = jwt.sign({email : email}, process.env.SECRET_ACCESS_TOKEN , { expiresIn: '1h' });
+    res.send({result});
+})
+
 
   } finally {
     //   await client.close();
